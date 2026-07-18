@@ -203,8 +203,5 @@ Once running, visit:
 - Task DTO/response schema currently omits `description` and `is_completed` fields from `TaskResponseSchema` (it returns at least `id` and `title`).
 - For task operations, the controller uses primary key lookup via SQLAlchemy ORM `.get()`.
 
----
 
-## License
-(Add your license information here.)
 
