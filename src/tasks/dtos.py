@@ -8,5 +8,6 @@ class TaskSchema(BaseModel):
 class TaskResponseSchema(BaseModel):
     id: int
     title: str
-    # description: str
+    user_id: int | None = 0
+    description: str
     # is_completed: bool
