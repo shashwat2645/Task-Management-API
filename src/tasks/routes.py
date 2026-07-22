@@ -18,19 +18,19 @@ def create_task(body: TaskSchema, db: Session = Depends(get_db), user: UserModel
 
 @task_routes.get("/get_tasks", response_model=List[TaskResponseSchema], status_code = status.HTTP_200_OK)
 def get_all_tasks(db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
-    return controller.get_tasks(db)
+    return controller.get_tasks(db, user)
 
 
 @task_routes.get("/get_task/{task_id}", response_model=TaskResponseSchema, status_code = status.HTTP_200_OK)
 def get_one_task(task_id:int, db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
-    return controller.get_one_task(task_id, db)
+    return controller.get_one_task(task_id, db, user)
 
 
 @task_routes.put("/update_task/{task_id}", response_model=TaskResponseSchema, status_code = status.HTTP_201_CREATED)
 def update_task(task_id:int, body:TaskSchema, db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
-    return controller.update_task(task_id, body, db)
+    return controller.update_task(task_id, body, db, user)
 
 
 @task_routes.delete("/delete_task/{task_id}", status_code = status.HTTP_204_NO_CONTENT)
 def delete_task(task_id:int, db: Session = Depends(get_db), user: UserModel = Depends(is_authenticated)):
-    return controller.delete_task(task_id, db)
+    return controller.delete_task(task_id, db, user)

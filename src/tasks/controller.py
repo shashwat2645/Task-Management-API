@@ -15,41 +15,40 @@ def create_task(body: TaskSchema, db:Session, user: UserModel):
     return new_task
 
 
-def get_tasks(db:Session):
-    tasks = db.query(TaskModel).all()
+def get_tasks(db:Session, user: UserModel):
+    tasks = db.query(TaskModel).filter(TaskModel.user_id == user.id).all()
     return tasks
 
 
-def get_one_task(task_id:id, db: Session):
-    task = db.query(TaskModel).get(task_id)
+def get_one_task(task_id:int, db: Session, user: UserModel):
+    task = db.query(TaskModel).filter(TaskModel.id == task_id, TaskModel.user_id == user.id).first()
     if not task:
         raise HTTPException(404, detail="No task not found")
     return task
 
 
-def update_task(task_id:int, body:TaskSchema, db:Session):
-    task = db.query(TaskModel).get(task_id)
+def update_task(task_id:int, body:TaskSchema, db:Session, user: UserModel):
+    task = db.query(TaskModel).filter(TaskModel.id == task_id, TaskModel.user_id == user.id).first()
     if not task:
         raise HTTPException(404, detail = "No such task exists")
     
-    body = body.model_dump()
+    update_data = body.model_dump()
 
-    for field, value in body.items():
+    for field, value in update_data.items():
         setattr(task, field, value)
-
-    # task.title = body.title
-    # task.description = body.description
-    # task.is_completed = body.is_completed
 
     db.add(task)
     db.commit()
     db.refresh(task)
     return task
 
-def delete_task(task_id:int, db:Session):
-    task = db.query(TaskModel).get(task_id)
+def delete_task(task_id:int, db:Session, user: UserModel):
+    task = db.query(TaskModel).filter(TaskModel.id == task_id).first()
     if not task:
         raise HTTPException(404, detail = "No such task exists")
+
+    if task.user_id != user.id:
+        raise HTTPException(401, detail="You don't have permission to delete this task")
     
     db.delete(task)
     db.commit()

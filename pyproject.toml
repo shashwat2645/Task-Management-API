@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.18.5",
+    "fastapi-mail>=1.6.5",
     "fastapi[standard]>=0.139.0",
     "psycopg2>=2.9.12",
     "pwdlib[argon2]>=0.3.0",
@@ -13,3 +14,6 @@ dependencies = [
     "pyjwt>=2.13.0",
     "sqlalchemy>=2.0.51",
 ]
+
+[tool.pyright]
+extraPaths = ["."]
