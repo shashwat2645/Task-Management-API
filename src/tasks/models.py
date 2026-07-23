@@ -1,12 +1,13 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 from src.utils.db import Base
 
 class TaskModel(Base):
     __tablename__ = "tasks"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    description = Column(String)
-    is_completed = Column(Boolean, default=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(String)
+    description: Mapped[str | None] = mapped_column(String)
+    is_completed: Mapped[bool] = mapped_column(default=False)
 
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
